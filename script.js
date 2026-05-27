@@ -12,8 +12,8 @@ const CONFIG = {
     // Ex: "https://script.google.com/macros/s/.../exec"
     API_SHEET_URL: "https://script.google.com/macros/s/AKfycbwTBnv9qY2k5PeEdgN8AVL2nThUiaqF3yYAR5KI0tp1FNisXYFI0gMlL51nYGJLUlhu/exec",
 
-    // Nome do arquivo da planilha original Húngara para referência no toast
-    SHEET_NAME: "Pedido do Cliente - HÚNGARA"
+    // Nome do arquivo da planilha original para referência no toast
+    SHEET_NAME: "Pedido do Cliente - TÂNIA"
 };
 
 // --- Complete 79-Product Database (Decoupled to products.js for shared use across pages) ---
@@ -431,7 +431,7 @@ function proceedToWhatsApp(orderedProducts, totalQty, sheetName) {
     elements.btnSubmitFinal.querySelector("span").textContent = "Enviar no WhatsApp e Gerar Planilha";
 
     // Format WhatsApp text
-    let text = `*NOVO PEDIDO: HÚNGARA*\n`;
+    let text = `*NOVO PEDIDO: CONSULTORA TÂNIA*\n`;
     text += `*Cliente:* ${state.clientName}\n`;
     text += `*Empresa/Loja:* ${state.companyName}\n`;
     text += `*Data:* ${new Date().toLocaleDateString("pt-BR")}\n\n`;
@@ -442,7 +442,7 @@ function proceedToWhatsApp(orderedProducts, totalQty, sheetName) {
     });
 
     text += `\n*Total de Itens:* ${totalQty} unidades\n\n`;
-    text += `_Pedido gerado via Catálogo Online Húngara._`;
+    text += `_Pedido gerado via Catálogo Online da Consultora Tânia._`;
 
     const encodedText = encodeURIComponent(text);
     const whatsappUrl = `https://wa.me/${CONFIG.WHATSAPP_PHONE}?text=${encodedText}`;
