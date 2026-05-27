@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Húngara | Catálogo de Pedidos Rápido</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="profile-avatar-wrapper">
+                    <img src="tania.png" alt="Consultora Tânia" class="profile-avatar" onerror="if(this.src.indexOf('tania.png.png') === -1) { this.src='tania.png.png'; } else { this.style.display='none'; this.nextElementSibling.style.display='flex'; }">
+                    <div class="profile-avatar-fallback" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                          <defs>
+                            <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stop-color="#0d9488" />
+                              <stop offset="100%" stop-color="#0f766e" />
+                            </linearGradient>
+                          </defs>
+                          <circle cx="50" cy="50" r="48" fill="url(#avatarGrad)"/>
+                          <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="'Plus Jakarta Sans', sans-serif" font-size="38" font-weight="700">T</text>
+                        </svg>
+                    </div>
+                    <span class="avatar-status-dot"></span>
+                </div>
+                <div>
+                    <h1>Catálogo de Produtos e Pedidos</h1>
+                    <p class="subtitle">Consultora Tânia</p>
+                </div>
+            </div>
+            <div class="status-indicator">
+                <span class="dot pulse"></span>
+                <span>Catálogo Online</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <main class="app-container">
+        
+        <!-- Welcome Card -->
+        <section class="welcome-card">
+            <h2>🛒 Faça seu Pedido de Forma Rápida</h2>
+            <p>Selecione as quantidades dos produtos desejados abaixo. Ao finalizar, confirme seu pedido.</p>
+            
+            <!-- Client Input Area -->
+            <div class="client-inputs-row">
+                <div class="client-input-wrapper">
+                    <label for="client-name">Seu Nome (Quem está pedindo) *</label>
+                    <div class="input-icon-group">
+                        <i data-lucide="user" class="input-icon"></i>
+                        <input type="text" id="client-name" placeholder="Ex: Maria Souza" required>
+                    </div>
+                </div>
+                
+                <div class="client-input-wrapper">
+                    <label for="client-company">Nome da Empresa / Loja *</label>
+                    <div class="input-icon-group">
+                        <i data-lucide="store" class="input-icon"></i>
+                        <input type="text" id="client-company" placeholder="Ex: Padaria Estrela ou Mercadinho Silva" required>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Filter Sticky Section -->
+        <section class="controls-section">
+            <div class="search-bar">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="search-input" placeholder="Pesquisar produto ou código...">
+                <button id="clear-search-btn" class="clear-btn" style="display: none;">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <!-- Categories Tabs Slider -->
+            <div class="categories-tabs-container">
+                <div class="categories-tabs" id="categories-tabs">
+                    <button class="tab-btn active" data-category="ALL">Todos</button>
+                    <!-- Categories will be injected dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Products List Section -->
+        <section class="products-section">
+            <div id="loading-spinner" class="loading-state" style="display: none;">
+                <div class="spinner"></div>
+                <p>Carregando produtos...</p>
+            </div>
+            
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <i data-lucide="search-code" class="empty-icon"></i>
+                <h3>Nenhum produto encontrado</h3>
+                <p>Tente digitar outro termo ou mudar de categoria.</p>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be injected dynamically -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Bar (Sticky Cart Review) -->
+    <div class="bottom-cart-bar" id="bottom-cart-bar">
+        <div class="cart-summary" id="open-cart-btn">
+            <div class="cart-icon-wrapper">
+                <i data-lucide="shopping-basket" class="cart-icon"></i>
+                <span class="cart-badge" id="cart-badge-count">0</span>
+            </div>
+            <div class="cart-text">
+                <span class="cart-title">Revisar Pedido</span>
+                <span class="cart-sub" id="cart-total-items">Nenhum item selecionado</span>
+            </div>
+        </div>
+        <button class="confirm-btn" id="confirm-order-btn" disabled>
+            <span>Confirmar Pedido</span>
+            <i data-lucide="arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- Order Drawer (Modal / Popup Sheet) -->
+    <div class="order-drawer-overlay" id="order-drawer-overlay"></div>
+    <div class="order-drawer" id="order-drawer">
+        <div class="drawer-header">
+            <div class="drawer-handle"></div>
+            <div class="drawer-title-row">
+                <h2>Revisão do Pedido</h2>
+                <button class="close-drawer-btn" id="close-drawer-btn">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <p class="drawer-subtitle">Confirme os produtos e quantidades antes de finalizar</p>
+        </div>
+
+        <div class="drawer-content">
+            <!-- Order Info Summary -->
+            <div class="order-meta-info">
+                <div class="meta-item">
+                    <span class="meta-label">Cliente:</span>
+                    <span class="meta-value highlight" id="drawer-client-name">-</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Total de Itens:</span>
+                    <span class="meta-value highlight" id="drawer-total-items">0</span>
+                </div>
+            </div>
+
+            <!-- Selected Products List -->
+            <div class="drawer-items-list" id="drawer-items-list">
+                <!-- Selected products injected here -->
+            </div>
+        </div>
+
+        <!-- Drawer Footer (Buttons) -->
+        <div class="drawer-footer">
+            <button class="btn-action btn-secondary" id="btn-back-catalog">
+                <i data-lucide="plus"></i>
+                <span>Adicionar mais itens</span>
+            </button>
+            
+            <button class="btn-action btn-primary btn-submit-order" id="btn-submit-final">
+                <i data-lucide="send"></i>
+                <span>Enviar no WhatsApp e Gerar Planilha</span>
+            </button>
+            
+            <p class="submit-disclaimer">
+                <i data-lucide="shield-check"></i>
+                O pedido será salvo na planilha e abrirá seu WhatsApp para notificar a consultora.
+            </p>
+        </div>
+    </div>
+
+    <!-- Alert / Toast Toast Notifications -->
+    <div class="toast-notification" id="toast-notification">
+        <i data-lucide="check-circle" class="toast-icon"></i>
+        <span class="toast-message" id="toast-message">Mensagem</span>
+    </div>
+
+    <!-- JavaScript Bundle -->
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
